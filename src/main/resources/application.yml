@@ -16,19 +16,10 @@ server:
     servlet:
         context-path: /
 spring:
-    mail:
-        host: smtp.gmail.com
-        port: 587
-        username: sjo112777@gmail.com
-        password: dlle gngh ksbm cfjc
-        properties:
-            mail:
-                smtp:
-                    auth: true
-                    timeout: 5000
-                    starttls:
-                        enable: true
-
+    servlet:
+      multipart:
+          location: uploads
+          max-file-size: 10MB
     application:
         name: sboard
         version: ${version}
@@ -43,12 +34,24 @@ spring:
     jpa:
         database: mysql
         hibernate:
-            ddl-auto: update
+            ddl-auto: none
             naming:
                 physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         properties:
             hibernate:
                 format_sql: true
                 show_sql: true
+    mail:
+        host: smtp.gmail.com
+        password: dlle gngh ksbm cfjc
+        port: 587
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+                    timeout: 5000
+        username: sjo112777@gmail.com
     thymeleaf:
         prefix: classpath:/templates
