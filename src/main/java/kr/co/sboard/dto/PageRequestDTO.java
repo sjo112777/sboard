@@ -26,7 +26,7 @@ public class PageRequestDTO {
     @Builder.Default
     private int size = 10;
     
-    private String type;
+    private String searchType;
     private String keyword;
     
     // 글목록 페이징 처리를 위한 Pageable 객체 생성 메서드

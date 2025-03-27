@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,25 +29,26 @@ public class ArticleService {
     private final ArticleMapper articleMapper;
     private final ModelMapper modelMapper;
 
-    public PageResponseDTO findAll(PageRequestDTO pageRequestDTO) {
 
-        //페이징 처리를 위한 pageable 객체 생성
+    public PageResponseDTO searchAll(PageRequestDTO pageRequestDTO) {
+
+        // 페이징 처리를 위한 pageable 객체 생성
         Pageable pageable = pageRequestDTO.getPageable("no");
 
-        Page<Tuple> pageArticle = articleRepository.selectAllForList(pageable);
-        log.info("pageArticle: {}", pageArticle);
+        Page<Tuple> pageArticle = articleRepository.selectAllForSearch(pageRequestDTO, pageable);
+        log.info("pageArticle : {}", pageArticle);
 
-        // article Entity 리스트를 ArticleDTO 리스트로 변환
+        // Article Entity 리스트를 ArticleDTO 리스트로 변환
         List<ArticleDTO> articleDTOList = pageArticle.getContent().stream().map(tuple -> {
 
             Article article = tuple.get(0, Article.class);
             String nick = tuple.get(1, String.class);
-            //article.setNick(nick);
 
             ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
             articleDTO.setNick(nick);
 
             return articleDTO;
+
         }).toList();
 
         int total = (int) pageArticle.getTotalElements();
@@ -59,8 +61,53 @@ public class ArticleService {
                 .build();
     }
 
-    public int register(ArticleDTO articleDTO){
 
+    public PageResponseDTO findAll(PageRequestDTO pageRequestDTO) {
+
+        // 페이징 처리를 위한 pageable 객체 생성
+        Pageable pageable = pageRequestDTO.getPageable("no");
+
+        Page<Tuple> pageArticle = articleRepository.selectAllForList(pageable);
+        log.info("pageArticle : {}", pageArticle);
+
+        // Article Entity 리스트를 ArticleDTO 리스트로 변환
+        List<ArticleDTO> articleDTOList = pageArticle.getContent().stream().map(tuple -> {
+
+            Article article = tuple.get(0, Article.class);
+            String nick = tuple.get(1, String.class);
+
+            ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+            articleDTO.setNick(nick);
+
+            return articleDTO;
+
+        }).toList();
+
+        int total = (int) pageArticle.getTotalElements();
+
+        return PageResponseDTO
+                .builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(articleDTOList)
+                .total(total)
+                .build();
+    }
+
+
+    public ArticleDTO findById(int no){
+
+        Optional<Article> optArticle = articleRepository.findById(no);
+
+        if(optArticle.isPresent()){
+            Article article = optArticle.get();
+            ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+
+            return articleDTO;
+        }
+        return null;
+    }
+
+    public int register(ArticleDTO articleDTO){
         // 엔티티 변환
         Article article = modelMapper.map(articleDTO, Article.class);
         log.info("article : {}", article);
