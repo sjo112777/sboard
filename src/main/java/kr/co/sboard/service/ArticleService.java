@@ -6,7 +6,9 @@ import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.PageRequestDTO;
 import kr.co.sboard.dto.PageResponseDTO;
 import kr.co.sboard.entity.Article;
+import kr.co.sboard.entity.User;
 import kr.co.sboard.repository.ArticleRepository;
+import kr.co.sboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
     private final ModelMapper modelMapper;
 
@@ -108,15 +111,24 @@ public class ArticleService {
     }
 
     public int register(ArticleDTO articleDTO){
+
         // 엔티티 변환
+        User user = User.builder()
+                .uid(articleDTO.getWriter())
+                .build();
+
         Article article = modelMapper.map(articleDTO, Article.class);
+        article.setUser(user);
+
         log.info("article : {}", article);
 
         // JPA 저장
-        //Article savedArticle = articleRepository.save(article);
-        // 저장한 글번호 반환
-        //return savedArticle.getNo();
+        Article savedArticle = articleRepository.save(article);
 
+        // 저장한 글번호 반환
+        return savedArticle.getNo();
+
+        /*
         // Mybatis 저장
         articleMapper.insertArticle(articleDTO);
 
@@ -124,6 +136,7 @@ public class ArticleService {
         int no = articleDTO.getNo();
 
         return no;
+        */
     }
 
 }

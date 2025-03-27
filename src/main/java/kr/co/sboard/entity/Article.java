@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -30,8 +30,6 @@ public class Article {
     private int file;
     private int hit;
 
-
-    //private String writer;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
     private User user;
@@ -41,7 +39,8 @@ public class Article {
     @CreationTimestamp
     private LocalDateTime wdate;
 
-    @OneToMany(mappedBy = "ano") //mappedBy 속성은 매핑되는 엔티티의 FK 컬럼
+
+    @OneToMany(mappedBy = "ano") // mappedBy 속성은 매핑되는 엔티티의 FK 컬럼
     private List<File> files;
 
 

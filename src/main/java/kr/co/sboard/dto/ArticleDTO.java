@@ -25,15 +25,17 @@ public class ArticleDTO {
     private String regip;
     private String wdate;
 
-    // 추가필드
+    // 추가 필드
     private String nick;
 
     private UserDTO user;
     private List<FileDTO> files;
 
-
     public String getWdate() {
-        return wdate.substring(0, 10);
+        if(wdate != null){
+            return wdate.substring(0, 10);
+        }
+        return null;
     }
 
     // 첨부파일 객체

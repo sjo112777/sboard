@@ -99,6 +99,11 @@ public class FileService {
 
         if(optFile.isPresent()){
             file = optFile.get();
+
+            int count = file.getDownload();
+            file.setDownload(count + 1);
+
+            fileRepository.save(file);
         }
 
         try{

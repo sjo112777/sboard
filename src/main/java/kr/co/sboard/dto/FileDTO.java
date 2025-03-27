@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.core.io.Resource;
 
 @Data
 @AllArgsConstructor
@@ -16,4 +17,8 @@ public class FileDTO {
     private String sName;
     private int download;
     private String rdate;
+
+    // 추가 필드
+    private String contentType;
+    private Resource resource;
 }
