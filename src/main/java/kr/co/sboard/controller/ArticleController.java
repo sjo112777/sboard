@@ -59,9 +59,9 @@ public class ArticleController {
     public String view(int no, Model model){
 
         // 글 조회 서비스 호출
-        ArticleDTO asdfasdfasdfasdfasdf = articleService.findById(no);
+        ArticleDTO articleDTO = articleService.findById(no);
 
-        model.addAttribute(asdfasdfasdfasdfasdf);
+        model.addAttribute(articleDTO);
 
         return "/article/view";
     }

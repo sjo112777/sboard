@@ -1,0 +1,24 @@
+public ResponseEntity downloadFile(int fno){
+
+        Optional<File> optFile = fileRepository.findById(fno);
+
+
+        File file = null;
+        if(optFile.isPresent()){
+            file = optFile.get();
+
+            int count = file.getDownload();
+            file.setDownload(count + 1);
+
+            fileRepository.save(file);
+        }
+
+     return null;
+  */
+        return fileService.downloadFile(fno);
+    }
+
+
+}
+
+

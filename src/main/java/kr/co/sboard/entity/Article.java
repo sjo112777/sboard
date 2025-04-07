@@ -43,6 +43,7 @@ public class Article {
     @OneToMany(mappedBy = "ano") // mappedBy 속성은 매핑되는 엔티티의 FK 컬럼
     private List<File> files;
 
+    private LocalDateTime edate;
 
     @PrePersist
     public void prePersist(){
